@@ -112,3 +112,15 @@ MainBenchmark.main      fast    ss   10  2.813 ± 0.104   s/op
 MainBenchmark.main      main    ss   10  3.115 ± 0.171   s/op
 MainBenchmark.main      best    ss   10  1.774 ± 0.074   s/op
 ```
+
+=== Use the Boot Classpath
+
+What about a class loader with null parent (like the baseline) but with reactor in the boot classpath. In addition to ripping out Actuator:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      base    ss   10  4.457 ± 0.197   s/op
+MainBenchmark.main      best    ss   10  1.802 ± 0.055   s/op
+```
+
+I.e. just as good startup time. Much simpler code.

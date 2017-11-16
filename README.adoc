@@ -75,6 +75,8 @@ Fat jar slower (don't know why). Exploded not that different, maybe even a bit f
 
 Instead of loading the function from `test-classes` in the `java-function-invoker` would could load from a jar, e.g. the `function-sample-pof` in `spring-cloud-function`.
 
+Baseline
+
 ```
 Benchmark           (sample)  Mode  Cnt  Score   Error  Units
 MainBenchmark.main      base    ss   10  5.479 ± 0.357   s/op
@@ -83,4 +85,16 @@ MainBenchmark.main      expl    ss   10  5.847 ± 0.214   s/op
 MainBenchmark.main      fast    ss   10  3.803 ± 0.089   s/op
 MainBenchmark.main      main    ss   10  3.978 ± 0.276   s/op
 MainBenchmark.main      best    ss   10  2.253 ± 0.082   s/op
+```
+
+Isolated class loader with function of `Flux`:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      base    ss   10  7.406 ± 0.384   s/op
+MainBenchmark.main      norm    ss   10  5.438 ± 0.137   s/op
+MainBenchmark.main      expl    ss   10  8.026 ± 0.532   s/op
+MainBenchmark.main      fast    ss   10  5.614 ± 0.137   s/op
+MainBenchmark.main      main    ss   10  4.135 ± 0.353   s/op
+MainBenchmark.main      best    ss   10  2.376 ± 0.105   s/op
 ```

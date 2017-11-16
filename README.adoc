@@ -7,7 +7,8 @@ You can run the benchmarks by cloning this repository next to your clone of `sk8
 
 === Baseline
 
-Results in seconds (baseline commit `d53434b`, 0.0.1-SNAPSHOT) on hardware "X1 Carbon" Thinkpad:
+Results in seconds (baseline commit `d53434b`, 0.0.1-SNAPSHOT) on hardware "X1 Carbon" Thinkpad (4-core Intel(R) Core(TM) i7-5600U CPU @ 2.60GHz
+):
 
 ```
 Benchmark           (sample)  Mode  Cnt  Score   Error  Units
@@ -24,6 +25,21 @@ MainBenchmark.main      best    ss   10  2.570 ± 0.404   s/op <6>
 <4> Exploded jar with extended JVM options, main class `JarLauncher`
 <5> Exploded jar with no JVM options, main class from app
 <6> Exploded jar with extended JVM options, main class from app
+
+On better hardware "Desktop" (8-core Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz):
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      base    ss   10  2.889 ± 0.130   s/op
+MainBenchmark.main      norm    ss   10  2.727 ± 0.034   s/op
+MainBenchmark.main      expl    ss   10  2.907 ± 0.166   s/op
+MainBenchmark.main      fast    ss   10  2.808 ± 0.050   s/op
+MainBenchmark.main      main    ss   10  2.129 ± 0.082   s/op
+MainBenchmark.main      best    ss   10  1.559 ± 0.040   s/op
+```
+
+The rest of the data below uses the "X1 Carbon".
+
 
 === With Flux Support
 

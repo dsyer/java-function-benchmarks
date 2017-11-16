@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.FileSystemUtils;
-import org.springframework.util.StringUtils;
 
 public class ProcessLauncherState {
 
@@ -217,8 +216,7 @@ public class ProcessLauncherState {
 
 	protected void monitor() throws IOException {
 		// use this method to wait for an app to start
-		output(getBuffer(),
-				"Started " + StringUtils.getFilenameExtension(APPLICATION_MAIN) + " in");
+		output(getBuffer(), ".*Started [a-zA-Z]* in.*");
 	}
 
 	protected void drain() throws IOException {
@@ -233,7 +231,7 @@ public class ProcessLauncherState {
 					.println("Scanning for: " + (marker == null ? "<nothing>" : marker));
 		}
 		while ((marker != null || br.ready()) && (line = br.readLine()) != null
-				&& (marker == null || !line.contains(marker))) {
+				&& (marker == null || !line.matches(marker))) {
 			sb.append(line + System.getProperty("line.separator"));
 			if (!"false".equals(System.getProperty("debug", "false"))) {
 				System.out.println(line);

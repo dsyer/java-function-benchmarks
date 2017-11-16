@@ -3,6 +3,10 @@ In this module we study the effect of various flags and implementation options o
 
 You can run the benchmarks by cloning this repository next to your clone of `sk8s` (and using the default directory names). If you want to change the locations or names of directories look at the `MainBenchmark` where it creates its state, and change the path to the `java-function-invoker` module. The version label for teh jar is also hard coded.
 
+== Results
+
+=== Baseline
+
 Results in seconds (baseline commit `d53434b`, 0.0.1-SNAPSHOT) on hardware "X1 Carbon" Thinkpad:
 
 ```
@@ -21,3 +25,32 @@ MainBenchmark.main      best    ss   10  2.570 ± 0.404   s/op <6>
 <5> Exploded jar with no JVM options, main class from app
 <6> Exploded jar with extended JVM options, main class from app
 
+=== With Flux Support
+
+Supported but not enabled, so same tests:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      base    ss   10  8.370 ± 1.318   s/op
+MainBenchmark.main      norm    ss   10  4.020 ± 0.351   s/op
+MainBenchmark.main      expl    ss   10  8.914 ± 0.803   s/op
+MainBenchmark.main      fast    ss   10  4.107 ± 0.270   s/op
+MainBenchmark.main      main    ss   10  4.817 ± 0.326   s/op
+MainBenchmark.main      best    ss   10  2.511 ± 0.290   s/op
+```
+
+(No regression.)
+
+With a `FluxDoubler` and an isolated classpath:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      base    ss   10  8.352 ± 2.284   s/op
+MainBenchmark.main      norm    ss   10  5.498 ± 0.087   s/op
+MainBenchmark.main      expl    ss   10  8.204 ± 0.888   s/op
+MainBenchmark.main      fast    ss   10  5.586 ± 0.126   s/op
+MainBenchmark.main      main    ss   10  4.178 ± 0.128   s/op
+MainBenchmark.main      best    ss   10  2.360 ± 0.066   s/op
+```
+
+Fat jar slightly slower, maybe. Exploded not that different, maybe even a bit faster.

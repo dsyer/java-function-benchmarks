@@ -123,4 +123,15 @@ MainBenchmark.main      base    ss   10  4.457 ± 0.197   s/op
 MainBenchmark.main      best    ss   10  1.802 ± 0.055   s/op
 ```
 
-I.e. just as good startup time. Much simpler code.
+i.e. just as good startup time. Much simpler code.
+
+=== All Swimming in the Same Soup
+
+Removing the function class loader seems like a valid approach, if it would save some startup time. It wouldn't work for all functions, but it might be a useful option. Here's the result:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.856 ± 0.040   s/op
+```
+
+i.e. no improvement. Simpler code, but more complicated build process, and functions have to be available on the classpath when the app starts.

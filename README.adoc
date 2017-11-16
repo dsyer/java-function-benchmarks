@@ -75,7 +75,7 @@ Fat jar slower (don't know why). Exploded not that different, maybe even a bit f
 
 Instead of loading the function from `test-classes` in the `java-function-invoker` would could load from a jar, e.g. the `function-sample-pof` in `spring-cloud-function`.
 
-Baseline
+Baseline (load from a jar, but not use isolated class loader):
 
 ```
 Benchmark           (sample)  Mode  Cnt  Score   Error  Units

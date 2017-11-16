@@ -98,3 +98,17 @@ MainBenchmark.main      fast    ss   10  5.614 ± 0.137   s/op
 MainBenchmark.main      main    ss   10  4.135 ± 0.353   s/op
 MainBenchmark.main      best    ss   10  2.376 ± 0.105   s/op
 ```
+
+=== Remove the Actuator
+
+The Actuator is pulled in via the Prometheus starter (3rd party). Removing that should speed things up. Results, relative to baseline:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      base    ss   10  4.260 ± 0.294   s/op
+MainBenchmark.main      norm    ss   10  2.693 ± 0.066   s/op
+MainBenchmark.main      expl    ss   10  4.725 ± 0.385   s/op
+MainBenchmark.main      fast    ss   10  2.813 ± 0.104   s/op
+MainBenchmark.main      main    ss   10  3.115 ± 0.171   s/op
+MainBenchmark.main      best    ss   10  1.774 ± 0.074   s/op
+```

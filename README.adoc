@@ -12,12 +12,12 @@ Results in seconds (baseline commit `d53434b`, 0.0.1-SNAPSHOT) on hardware "X1 C
 
 ```
 Benchmark           (sample)  Mode  Cnt  Score   Error  Units
-MainBenchmark.main      base    ss   10  9.406 ± 1.402   s/op <1>
-MainBenchmark.main      norm    ss   10  4.028 ± 0.442   s/op <2>
-MainBenchmark.main      expl    ss   10  9.225 ± 0.977   s/op <3>
-MainBenchmark.main      fast    ss   10  4.230 ± 0.495   s/op <4>
-MainBenchmark.main      main    ss   10  4.919 ± 0.290   s/op <5>
-MainBenchmark.main      best    ss   10  2.570 ± 0.404   s/op <6>
+MainBenchmark.main      base    ss   10  5.522 ± 0.330   s/op
+MainBenchmark.main      norm    ss   10  3.685 ± 0.095   s/op
+MainBenchmark.main      expl    ss   10  5.807 ± 0.409   s/op
+MainBenchmark.main      fast    ss   10  3.834 ± 0.122   s/op
+MainBenchmark.main      main    ss   10  4.044 ± 0.203   s/op
+MainBenchmark.main      best    ss   10  2.251 ± 0.108   s/op
 ```
 <1> Fat jar no JVM options
 <2> Fat jar with extended JVM options
@@ -47,12 +47,12 @@ Supported but not enabled, so same tests:
 
 ```
 Benchmark           (sample)  Mode  Cnt  Score   Error  Units
-MainBenchmark.main      base    ss   10  8.370 ± 1.318   s/op
-MainBenchmark.main      norm    ss   10  4.020 ± 0.351   s/op
-MainBenchmark.main      expl    ss   10  8.914 ± 0.803   s/op
-MainBenchmark.main      fast    ss   10  4.107 ± 0.270   s/op
-MainBenchmark.main      main    ss   10  4.817 ± 0.326   s/op
-MainBenchmark.main      best    ss   10  2.511 ± 0.290   s/op
+MainBenchmark.main      base    ss   10  5.451 ± 0.397   s/op
+MainBenchmark.main      norm    ss   10  3.801 ± 0.183   s/op
+MainBenchmark.main      expl    ss   10  5.896 ± 0.430   s/op
+MainBenchmark.main      fast    ss   10  4.019 ± 0.858   s/op
+MainBenchmark.main      main    ss   10  4.109 ± 0.163   s/op
+MainBenchmark.main      best    ss   10  2.344 ± 0.136   s/op
 ```
 
 (No regression.)
@@ -61,12 +61,26 @@ With a `FluxDoubler` and an isolated classpath:
 
 ```
 Benchmark           (sample)  Mode  Cnt  Score   Error  Units
-MainBenchmark.main      base    ss   10  8.352 ± 2.284   s/op
-MainBenchmark.main      norm    ss   10  5.498 ± 0.087   s/op
-MainBenchmark.main      expl    ss   10  8.204 ± 0.888   s/op
-MainBenchmark.main      fast    ss   10  5.586 ± 0.126   s/op
-MainBenchmark.main      main    ss   10  4.178 ± 0.128   s/op
-MainBenchmark.main      best    ss   10  2.360 ± 0.066   s/op
+MainBenchmark.main      base    ss   10  7.275 ± 0.516   s/op
+MainBenchmark.main      norm    ss   10  5.415 ± 0.061   s/op
+MainBenchmark.main      expl    ss   10  7.871 ± 0.483   s/op
+MainBenchmark.main      fast    ss   10  5.523 ± 0.124   s/op
+MainBenchmark.main      main    ss   10  4.102 ± 0.201   s/op
+MainBenchmark.main      best    ss   10  2.315 ± 0.089   s/op
 ```
 
-Fat jar slightly slower, maybe. Exploded not that different, maybe even a bit faster.
+Fat jar slower (don't know why). Exploded not that different, maybe even a bit faster.
+
+=== Load Function from Jar
+
+Instead of loading the function from `test-classes` in the `java-function-invoker` would could load from a jar, e.g. the `function-sample-pof` in `spring-cloud-function`.
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      base    ss   10  5.479 ± 0.357   s/op
+MainBenchmark.main      norm    ss   10  3.702 ± 0.048   s/op
+MainBenchmark.main      expl    ss   10  5.847 ± 0.214   s/op
+MainBenchmark.main      fast    ss   10  3.803 ± 0.089   s/op
+MainBenchmark.main      main    ss   10  3.978 ± 0.276   s/op
+MainBenchmark.main      best    ss   10  2.253 ± 0.082   s/op
+```

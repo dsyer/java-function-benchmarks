@@ -19,12 +19,12 @@ MainBenchmark.main      fast    ss   10  3.834 ± 0.122   s/op
 MainBenchmark.main      main    ss   10  4.044 ± 0.203   s/op
 MainBenchmark.main      best    ss   10  2.251 ± 0.108   s/op
 ```
-<1> Fat jar no JVM options
-<2> Fat jar with extended JVM options
-<3> Exploded jar with no JVM options, main class `JarLauncher`
-<4> Exploded jar with extended JVM options, main class `JarLauncher`
-<5> Exploded jar with no JVM options, main class from app
-<6> Exploded jar with extended JVM options, main class from app
+<1> (base) Fat jar no JVM options (i.e. roughly where we were before any optimizations)
+<2> (norm) Fat jar with extended JVM options
+<3> (expl) Exploded jar with no JVM options, main class `JarLauncher`
+<4> (fast) Exploded jar with extended JVM options, main class `JarLauncher`
+<5> (main) Exploded jar with no JVM options, main class from app
+<6> (best) Exploded jar with extended JVM options, main class from app
 
 On better hardware "Desktop" (8-core Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz):
 

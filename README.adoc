@@ -135,3 +135,27 @@ MainBenchmark.main      best    ss   10  1.856 ± 0.040   s/op
 ```
 
 i.e. no improvement. Simpler code, but more complicated build process, and functions have to be available on the classpath when the app starts.
+
+=== Use the Thin Deployer
+
+To support a more Spring Boot native instantiation strategy, we can use the deployer from the [Spring Cloud Function](https://github.com/spring-cloud/spring-cloud-function). It starts a `@SpringBootApplication` in an isolated classloader and registers all the functions it finds there in the main application `FunctionCatalog`. Here's the first attempt:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  3.135 ± 0.209   s/op
+```
+
+So it's slower by about 1300ms. 500ms of that is the new function context starting up. The rest is the Thin Deployer resolving dependencies and building a classpath. Should be able to speed that up with a pre-computed `thin.properties`, i.e. using the output from this
+
+```
+$ java -jar spring-boot-thin-launcher-1.0.8.BUILD-SNAPSHOT-exec.jar --thin.classpath=properties --thin.archive=~/dev/thin/function/spring-cloud-function-samples/function-sample-pof/target/classes
+```
+
+Here's the result:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  2.226 ± 0.138   s/op
+```
+
+That closes the gap to 500ms. All of that is still in the deployer so maybe there are some optimizations to do there. If we could launch fat or shaded jars without any need for aether, that would speed things up a lot.

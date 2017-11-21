@@ -159,3 +159,41 @@ MainBenchmark.main      best    ss   10  2.226 ± 0.138   s/op
 ```
 
 That closes the gap to 500ms. All of that is still in the deployer so maybe there are some optimizations to do there. If we could launch fat or shaded jars without any need for aether, that would speed things up a lot.
+
+=== Shaded Function Jars and "Native" Spring Context Runner
+
+Instead of depending on the deployer we could observe that some of that code has to be duplicated (instead of generalizing it just to support `Flux<>` functions and a shared parent class loader). So we could just use that code (the `ContextRunner`) to create a Spring Boot application in the `FunctionConfiguration`. The function jars would have to be shaded, at least initially.
+
+Adding that code, but not using the `ContextRunner` (i.e. just doing the same as before, to check for stupid regressions), running from a jar file (`sample-function-pof`):
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.826 ± 0.081   s/op
+```
+
+(So that looks good.)
+
+Using the `app:classpath` and a `Doubler` (so still not launching Spring):
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.811 ± 0.088   s/op
+```
+
+Using the `app:classpath` and a `SpringDoubler` (so launching Spring "manually"):
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  2.549 ± 0.108   s/op
+```
+
+(Adds about 700ms for the second Spring lifecycle.)
+
+Using a jar file (`function-sample-pof`) and a Spring main class:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  2.574 ± 0.096   s/op
+```
+
+(About the same.)

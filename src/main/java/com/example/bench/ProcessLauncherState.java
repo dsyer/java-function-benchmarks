@@ -66,10 +66,14 @@ public class ProcessLauncherState {
 		}
 		this.length = this.args.size();
 		this.args.add("--server.port=0");
-		this.args.add("--function.uri=file:" + new File(System.getProperty("user.home")
-				+ "/.m2/repository/io/spring/sample/function-sample-pof/1.0.0.BUILD-SNAPSHOT/function-sample-pof-1.0.0.BUILD-SNAPSHOT.jar")
-						.getAbsolutePath()
-				+ "?functions.Greeter");
+		this.args.add("--function.uri=file:" + 
+                      //				new File(projectHome + "/target/test-classes").getAbsolutePath()
+                      //				+ ",app:classpath?handler=io.sk8s.invoker.java.function.Doubler");
+				new File(System.getProperty("user.home")
+                        + "/.m2/repository/io/spring/sample/function-sample-pof/1.0.0.BUILD-SNAPSHOT/function-sample-pof-1.0.0.BUILD-SNAPSHOT-exec.jar")
+                      .getAbsolutePath()
+                      + "?handler=functions.Greeter"
+                      + "&main=functions.Application");
 		this.args.addAll(Arrays.asList(args));
 		this.home = new File(dir);
 	}
@@ -209,6 +213,7 @@ public class ProcessLauncherState {
 		started = builder.start();
 		InputStream stream = started.getInputStream();
 		this.buffer = new BufferedReader(new InputStreamReader(stream));
+		monitor();
 		monitor();
 	}
 

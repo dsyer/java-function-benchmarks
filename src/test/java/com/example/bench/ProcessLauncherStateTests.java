@@ -34,12 +34,13 @@ public class ProcessLauncherStateTests {
 
 	@Test
 	public void test() throws Exception {
-		ProcessLauncherState state = new ProcessLauncherState("../sk8s/function-invokers/java-function-invoker", "target/test");
+		System.setProperty("debug", "true");
+		ProcessLauncherState state = new ProcessLauncherState("../java-function-invoker", "target/test");
 		state.before();
 		state.run();
 		state.after();
 		output.flush();
-		assertThat(output.toString()).containsPattern("Started [a-zA-Z]* in");
+		assertThat(output.toString()).containsPattern("Invoker app started");
 	}
 
 }

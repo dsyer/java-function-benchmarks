@@ -36,7 +36,7 @@ public class ProcessLauncherState {
 
 	private static final String DEFAULT_MAIN = "org.springframework.boot.loader.JarLauncher";
 
-	private static final String APPLICATION_MAIN = "io.sk8s.invoker.java.server.JavaFunctionInvokerApplication";
+	private static final String APPLICATION_MAIN = "io.projectriff.invoker.JavaFunctionInvokerApplication";
 
 	private static final Logger log = LoggerFactory.getLogger(ProcessLauncherState.class);
 
@@ -48,7 +48,7 @@ public class ProcessLauncherState {
 	private int length;
 	private boolean exploded = false;
 	private int classpath = 0;
-	private String jar = "/target/java-function-invoker-0.0.1-SNAPSHOT.jar";
+	private String jar = "/target/java-function-invoker-0.0.2-snapshot.jar";
 	private String projectHome;
 
 	private BufferedReader buffer;
@@ -66,14 +66,14 @@ public class ProcessLauncherState {
 		}
 		this.length = this.args.size();
 		this.args.add("--server.port=0");
-		this.args.add("--function.uri=file:" + 
-                      //				new File(projectHome + "/target/test-classes").getAbsolutePath()
-                      //				+ ",app:classpath?handler=io.sk8s.invoker.java.function.Doubler");
-				new File(System.getProperty("user.home")
-                        + "/.m2/repository/io/spring/sample/function-sample-pof/1.0.0.BUILD-SNAPSHOT/function-sample-pof-1.0.0.BUILD-SNAPSHOT-exec.jar")
-                      .getAbsolutePath()
-                      + "?handler=functions.Greeter"
-                      + "&main=functions.Application");
+		this.args.add("--function.uri=file:"
+				+ new File(projectHome + "/target/test-classes").getAbsolutePath()
+				+ ",app:classpath?handler=io.projectriff.functions.Doubler");
+		// new File(System.getProperty("user.home") +
+		// "/.m2/repository/io/spring/sample/function-sample-pof/1.0.0.BUILD-SNAPSHOT/function-sample-pof-1.0.0.BUILD-SNAPSHOT-exec.jar")
+		// .getAbsolutePath()
+		// + "?handler=functions.Greeter"
+		// + "&main=functions.Application");
 		this.args.addAll(Arrays.asList(args));
 		this.home = new File(dir);
 	}
@@ -94,8 +94,6 @@ public class ProcessLauncherState {
 
 	public void setExploded() {
 		this.exploded = true;
-		unpack(new File(this.home, "unpacked").getAbsolutePath(),
-				new File(this.projectHome, this.jar).getAbsolutePath());
 	}
 
 	private void unpack(String path, String jar) {
@@ -137,6 +135,8 @@ public class ProcessLauncherState {
 
 	private String getClasspath() {
 		if (this.exploded) {
+			unpack(new File(this.home, "unpacked").getAbsolutePath(),
+					new File(this.projectHome, this.jar).getAbsolutePath());
 			String basedir = this.home.getAbsolutePath() + "/unpacked";
 			StringBuilder builder = new StringBuilder();
 			if (this.mainClass.equals(DEFAULT_MAIN)) {
@@ -200,6 +200,8 @@ public class ProcessLauncherState {
 		args.add(this.length, this.mainClass);
 		ProcessBuilder builder = new ProcessBuilder(args);
 		home.mkdirs();
+		new File(home, "target/stream").mkdirs();
+		new File(home, "target/stream/input").createNewFile();
 		builder.directory(home);
 		builder.redirectErrorStream(true);
 		customize(builder);
@@ -214,7 +216,6 @@ public class ProcessLauncherState {
 		InputStream stream = started.getInputStream();
 		this.buffer = new BufferedReader(new InputStreamReader(stream));
 		monitor();
-		monitor();
 	}
 
 	protected void customize(ProcessBuilder builder) {
@@ -222,7 +223,7 @@ public class ProcessLauncherState {
 
 	protected void monitor() throws IOException {
 		// use this method to wait for an app to start
-		output(getBuffer(), ".*Started [a-zA-Z]* in.*");
+		output(getBuffer(), ".*Invoker app started.*");
 	}
 
 	protected void drain() throws IOException {

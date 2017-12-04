@@ -49,10 +49,14 @@ public class MainBenchmark {
 		public static enum Sample {
 			base(false), norm(false, DEFAULT_JVM_ARGS), expl(true), fast(true,
 					DEFAULT_JVM_ARGS), main(true, false), best(true, false,
-							DEFAULT_JVM_ARGS);
+							DEFAULT_JVM_ARGS), nost(true, false, new String[] {
+									"--spring.cloud.stream.enabled=false",
+									"--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration,org.springframework.cloud.stream.config.codec.kryo.KryoCodecAutoConfiguration" },
+									DEFAULT_JVM_ARGS);
 			private boolean exploded = false;
 			private boolean launcher = true;
 			private String[] jvmArgs;
+			private String[] args;
 
 			private Sample(String... jvmArgs) {
 				this(false, true, jvmArgs);
@@ -63,8 +67,14 @@ public class MainBenchmark {
 			}
 
 			private Sample(boolean exploded, boolean launcher, String... jvmArgs) {
+				this(exploded, launcher, new String[0], jvmArgs);
+			}
+
+			private Sample(boolean exploded, boolean launcher, String[] args,
+					String[] jvmArgs) {
 				this.launcher = launcher;
 				this.exploded = exploded;
+				this.args = args;
 				this.jvmArgs = jvmArgs;
 			}
 
@@ -74,7 +84,7 @@ public class MainBenchmark {
 		private Sample sample = Sample.fast;
 
 		public MainState() {
-			super("../sk8s/function-invokers/java-function-invoker", "target/test");
+			super("../java-function-invoker", "target/test");
 		}
 
 		@TearDown(Level.Iteration)
@@ -91,6 +101,7 @@ public class MainBenchmark {
 				setApplicationMain();
 			}
 			jvmArgs(sample.jvmArgs);
+			args(sample.args);
 			super.before();
 		}
 	}

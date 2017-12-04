@@ -223,6 +223,17 @@ MainBenchmark.main      best    ss   10  2.856 ± 0.093   s/op
 
 If startup time is proportional to classes loaded, we'd expect closer to 2200ms startup for 6271 classes, so there is room for improvement.
 
+== Disabling Streams
+
+Once the streams are on the classpath they take extra time on startup, even if they are not used. We added a "nost" sample where we measure the effect of switching off streams (and Spring Integration) at runtime.
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      nost    ss   10  1.957 ± 0.130   s/op
+```
+
+(Almost as fast as without the stream dependencies.)
+
 == Java 9
 
 The function invoker needs some changes to avoid making assumptions about the form of the class loader. Once that is done:
@@ -233,3 +244,20 @@ MainBenchmark.main      best    ss   10  2.403 ± 0.204   s/op
 ```
 
 So a bit slower overall. Shared class caches offer some hope to get back a bit of that speed, but it's unlikely to beat the raw Java 8 numbers.
+
+== Disabling Selective Autoconfigs
+
+Small improvements might be possible by disabling selective autconfigs. With 
+
+```
+--spring.autoconfigure.exclude=\
+  org.springframework.boot.autoconfigure.websocket.WebSocketAutoConfiguration,
+  org.springframework.boot.autoconfigure.cache.CacheAutoConfiguration
+```
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.813 ± 0.080   s/op
+```
+
+(It's marginal, but detectable, just about.)

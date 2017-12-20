@@ -35,8 +35,7 @@ import org.openjdk.jmh.annotations.Warmup;
 public class MainBenchmark {
 
 	private static String[] DEFAULT_JVM_ARGS = new String[] { "-Xmx128m",
-			"-Djava.security.egd=file:/dev/./urandom", "-XX:TieredStopAtLevel=1",
-			"-noverify" };
+			"-Djava.security.egd=file:/dev/./urandom", "-noverify" };
 
 	@Benchmark
 	public void main(MainState state) throws Exception {
@@ -52,7 +51,10 @@ public class MainBenchmark {
 							DEFAULT_JVM_ARGS), nost(true, false, new String[] {
 									"--spring.cloud.stream.enabled=false",
 									"--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration,org.springframework.cloud.stream.config.codec.kryo.KryoCodecAutoConfiguration" },
-									DEFAULT_JVM_ARGS);
+									DEFAULT_JVM_ARGS), nweb(true, false,
+											new String[] {
+													"--spring.main.web-environment=false" },
+											DEFAULT_JVM_ARGS);
 			private boolean exploded = false;
 			private boolean launcher = true;
 			private String[] jvmArgs;

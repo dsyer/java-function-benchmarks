@@ -48,7 +48,7 @@ public class ProcessLauncherState {
 	private int length;
 	private boolean exploded = false;
 	private int classpath = 0;
-	private String jar = "/target/java-function-invoker-0.0.2-snapshot.jar";
+	private String jar = "/target/java-function-invoker-0.0.3-snapshot.jar";
 	private String projectHome;
 
 	private BufferedReader buffer;
@@ -60,6 +60,14 @@ public class ProcessLauncherState {
 		this.projectHome = projectHome;
 		this.args.add(System.getProperty("java.home") + "/bin/java");
 		this.args.addAll(DEFAULT_JVM_ARGS);
+		String vendor = System.getProperty("java.vendor", "").toLowerCase();
+		if (vendor.contains("ibm") || vendor.contains("j9")) {
+			this.args.addAll(Arrays.asList("-Xms32m", "-Xquickstart", "-Xshareclasses",
+					"-Xscmx128m"));
+		}
+		else {
+			this.args.addAll(Arrays.asList("-XX:TieredStopAtLevel=1"));
+		}
 		this.classpath = this.args.indexOf("-cp") + 1;
 		if (System.getProperty("bench.args") != null) {
 			this.args.addAll(Arrays.asList(System.getProperty("bench.args").split(" ")));

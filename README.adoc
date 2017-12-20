@@ -261,3 +261,19 @@ MainBenchmark.main      best    ss   10  1.813 ± 0.080   s/op
 ```
 
 (It's marginal, but detectable, just about.)
+
+== Remove Web Endpoints
+
+Remove `spring-cloud-function-web` and the stream dependencies on `spring-boot-starter-web`:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.862 ± 0.253   s/op
+```
+
+Similar result from `nweb` sample (with `spring.main.web-environment=false`):
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      nweb    ss   10  1.864 ± 0.084   s/op
+```

@@ -277,3 +277,49 @@ Similar result from `nweb` sample (with `spring.main.web-environment=false`):
 Benchmark           (sample)  Mode  Cnt  Score   Error  Units
 MainBenchmark.main      nweb    ss   10  1.864 ± 0.084   s/op
 ```
+
+== GRPC
+
+A gRPC server wouldn't need the web server or Spring Cloud Stream. Basic prototype (that seems to work):
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.355 ± 0.176   s/op
+```
+
+Add gRPC to the web app (replacing Spring Cloud Stream):
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  2.074 ± 0.061   s/op
+```
+
+With GSON instead of Jackson:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.978 ± 0.079   s/op
+```
+
+also removing `hibernate-validator`:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.822 ± 0.063   s/op
+```
+
+also removing `logback` (replacing with `slf4j-jdk14`):
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  1.776 ± 0.084   s/op
+MainBenchmark.main      nweb    ss   10  1.083 ± 0.042   s/op
+```
+
+with log4j2 instead:
+
+```
+Benchmark           (sample)  Mode  Cnt  Score   Error  Units
+MainBenchmark.main      best    ss   10  2.061 ± 0.081   s/op
+MainBenchmark.main      nweb    ss   10  1.401 ± 0.055   s/op
+```

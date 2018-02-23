@@ -48,7 +48,7 @@ public class ProcessLauncherState {
 	private int length;
 	private boolean exploded = false;
 	private int classpath = 0;
-	private String jar = "/target/java-function-invoker-0.0.3-snapshot.jar";
+	private String jar = "/target/java-function-invoker-0.0.5-SNAPSHOT.jar";
 	private String projectHome;
 
 	private BufferedReader buffer;

@@ -28,19 +28,20 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  */
 public class ProcessLauncherStateTests {
-	
+
 	@Rule
 	public OutputCapture output = new OutputCapture();
 
 	@Test
 	public void test() throws Exception {
 		System.setProperty("debug", "true");
-		ProcessLauncherState state = new ProcessLauncherState("../java-function-invoker", "target/test");
+		ProcessLauncherState state = new ProcessLauncherState("../java-function-invoker",
+				"target/test");
 		state.before();
 		state.run();
 		state.after();
 		output.flush();
-		assertThat(output.toString()).containsPattern("Invoker app started");
+		assertThat(output.toString()).containsPattern("Started application");
 	}
 
 }

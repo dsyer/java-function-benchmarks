@@ -31,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.util.FileSystemUtils;
+import org.springframework.util.StringUtils;
 
 public class ProcessLauncherState {
 
@@ -48,7 +49,7 @@ public class ProcessLauncherState {
 	private int length;
 	private boolean exploded = false;
 	private int classpath = 0;
-	private String jar = "/target/java-function-invoker-0.0.5-SNAPSHOT.jar";
+	private String jar = "/target/java-function-invoker-0.0.6-SNAPSHOT-exec.jar";
 	private String projectHome;
 
 	private BufferedReader buffer;
@@ -75,7 +76,8 @@ public class ProcessLauncherState {
 		this.length = this.args.size();
 		this.args.add("--server.port=0");
 		this.args.add("--function.uri=file:"
-				+ new File(projectHome + "/target/test-classes").getAbsolutePath()
+				+ StringUtils.cleanPath(
+						new File(projectHome + "/target/test-classes").getAbsolutePath())
 				+ ",app:classpath?handler=io.projectriff.functions.Doubler");
 		// new File(System.getProperty("user.home") +
 		// "/.m2/repository/io/spring/sample/function-sample-pof/1.0.0.BUILD-SNAPSHOT/function-sample-pof-1.0.0.BUILD-SNAPSHOT-exec.jar")
@@ -147,10 +149,9 @@ public class ProcessLauncherState {
 					new File(this.projectHome, this.jar).getAbsolutePath());
 			String basedir = this.home.getAbsolutePath() + "/unpacked";
 			StringBuilder builder = new StringBuilder();
-			if (this.mainClass.equals(DEFAULT_MAIN)) {
-				builder.append(basedir);
-			}
-			else {
+			builder.append(basedir);
+			if (!this.mainClass.equals(DEFAULT_MAIN)) {
+				builder.append(File.pathSeparator);
 				builder.append(basedir + "/BOOT-INF/classes");
 				try {
 					PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -208,8 +209,6 @@ public class ProcessLauncherState {
 		args.add(this.length, this.mainClass);
 		ProcessBuilder builder = new ProcessBuilder(args);
 		home.mkdirs();
-		new File(home, "target/stream").mkdirs();
-		new File(home, "target/stream/input").createNewFile();
 		builder.directory(home);
 		builder.redirectErrorStream(true);
 		customize(builder);
@@ -231,7 +230,7 @@ public class ProcessLauncherState {
 
 	protected void monitor() throws IOException {
 		// use this method to wait for an app to start
-		output(getBuffer(), ".*Invoker app started.*");
+		output(getBuffer(), ".*Started application.*");
 	}
 
 	protected void drain() throws IOException {

@@ -16,10 +16,10 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<jmh.version>1.16</jmh.version>
-		<spring-boot.version>1.5.8.RELEASE</spring-boot.version>
-		<spring-cloud.version>Dalston.SR4</spring-cloud.version>
+		<spring-boot.version>1.5.12.RELEASE</spring-boot.version>
+		<spring-cloud.version>Edgware.SR3</spring-cloud.version>
 		<locator.version>1.0.0.RELEASE</locator.version>
-		<thin.version>1.0.7.RELEASE</thin.version>
+		<thin.version>1.0.10.RELEASE</thin.version>
 		<uberjar.name>benchmarks</uberjar.name>
 		<start-class>org.openjdk.jmh.Main</start-class>
 	</properties>

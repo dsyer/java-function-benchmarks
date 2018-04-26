@@ -17,6 +17,8 @@ dependency-reduced-pom.xml
 .project
 .settings
 .springBeans
+.attach_pid*
+.sts4-cache/
 
 ### IntelliJ IDEA ###
 .idea

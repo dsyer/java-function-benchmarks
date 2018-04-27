@@ -51,9 +51,8 @@ public class MainBenchmark {
 							DEFAULT_JVM_ARGS), nost(true, false, new String[] {
 									"--spring.cloud.stream.enabled=false",
 									"--spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.integration.IntegrationAutoConfiguration,org.springframework.cloud.stream.config.codec.kryo.KryoCodecAutoConfiguration" },
-									DEFAULT_JVM_ARGS), nweb(true, false,
-											new String[] {
-													"--spring.main.web-environment=false" },
+									DEFAULT_JVM_ARGS), nweb(true, false, new String[] {
+											"--spring.main.web-environment=false" },
 											DEFAULT_JVM_ARGS);
 			private boolean exploded = false;
 			private boolean launcher = true;
@@ -89,7 +88,7 @@ public class MainBenchmark {
 			super("../java-function-invoker", "target/test");
 		}
 
-		@TearDown(Level.Iteration)
+		@TearDown(Level.Invocation)
 		public void stop() throws Exception {
 			super.after();
 		}
